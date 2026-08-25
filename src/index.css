@@ -1,0 +1,166 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-serif: 'Fraunces', Georgia, serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  
+  --color-coral-50: #fff5f2;
+  --color-coral-100: #ffe8e2;
+  --color-coral-200: #ffd4c9;
+  --color-coral-300: #ffb5a3;
+  --color-coral-400: #ff8970;
+  --color-coral-500: #f26440;
+  --color-coral-600: #e04a25;
+  --color-coral-700: #bb3717;
+  --color-coral-800: #9a2f16;
+  --color-coral-900: #7f2b18;
+}
+
+/* Default Theme: Indigo Slate */
+:root, .theme-indigo-slate {
+  --bg-app: #f8fafc;
+  --bg-surface: #ffffff;
+  --bg-surface-subtle: #f1f5f9;
+  --border-theme: #e2e8f0;
+  --border-theme-subtle: #f1f5f9;
+  
+  --brand-primary: #4338ca;
+  --brand-primary-hover: #3730a3;
+  --brand-primary-light: #e0e7ff;
+  --brand-primary-dark: #312e81;
+  --brand-primary-ring: rgba(67, 56, 202, 0.2);
+
+  --brand-accent: #f59e0b;
+  --brand-accent-hover: #d97706;
+  --brand-accent-light: #fef3c7;
+  --brand-accent-dark: #92400e;
+
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --text-heading: #1e1b4b;
+  --nav-icon-bg: #312e81;
+  --selection-bg: #c7d2fe;
+  --selection-text: #1e1b4b;
+}
+
+/* Alpine Evergreen Theme */
+.theme-alpine-evergreen {
+  --bg-app: #faf9f6;
+  --bg-surface: #ffffff;
+  --bg-surface-subtle: #f5f4ef;
+  --border-theme: #e7e5e4;
+  --border-theme-subtle: #f5f5f4;
+  
+  --brand-primary: #047857;
+  --brand-primary-hover: #065f46;
+  --brand-primary-light: #d1fae5;
+  --brand-primary-dark: #064e3b;
+  --brand-primary-ring: rgba(4, 120, 87, 0.2);
+
+  --brand-accent: #ea580c;
+  --brand-accent-hover: #c2410c;
+  --brand-accent-light: #ffedd5;
+  --brand-accent-dark: #9a3412;
+
+  --text-main: #1c1917;
+  --text-muted: #78716c;
+  --text-heading: #064e3b;
+  --nav-icon-bg: #064e3b;
+  --selection-bg: #a7f3d0;
+  --selection-text: #064e3b;
+}
+
+/* Ocean & Coral Theme */
+.theme-ocean-cyan {
+  --bg-app: #f0f9ff;
+  --bg-surface: #ffffff;
+  --bg-surface-subtle: #e0f2fe;
+  --border-theme: #bae6fd;
+  --border-theme-subtle: #e0f2fe;
+  
+  --brand-primary: #0284c7;
+  --brand-primary-hover: #0369a1;
+  --brand-primary-light: #e0f2fe;
+  --brand-primary-dark: #075985;
+  --brand-primary-ring: rgba(2, 132, 199, 0.2);
+
+  --brand-accent: #f43f5e;
+  --brand-accent-hover: #e11d48;
+  --brand-accent-light: #ffe4e6;
+  --brand-accent-dark: #9f1239;
+
+  --text-main: #082f49;
+  --text-muted: #0284c7;
+  --text-heading: #0c4a6e;
+  --nav-icon-bg: #0369a1;
+  --selection-bg: #bae6fd;
+  --selection-text: #0c4a6e;
+}
+
+/* Obsidian Violet Theme */
+.theme-obsidian-violet {
+  --bg-app: #fafafa;
+  --bg-surface: #ffffff;
+  --bg-surface-subtle: #f4f4f5;
+  --border-theme: #e4e4e7;
+  --border-theme-subtle: #f4f4f5;
+  
+  --brand-primary: #7c3aed;
+  --brand-primary-hover: #6d28d9;
+  --brand-primary-light: #ede9fe;
+  --brand-primary-dark: #4c1d95;
+  --brand-primary-ring: rgba(124, 58, 237, 0.2);
+
+  --brand-accent: #ec4899;
+  --brand-accent-hover: #db2777;
+  --brand-accent-light: #fce7f3;
+  --brand-accent-dark: #9d174d;
+
+  --text-main: #18181b;
+  --text-muted: #71717a;
+  --text-heading: #3b0764;
+  --nav-icon-bg: #18181b;
+  --selection-bg: #ddd6fe;
+  --selection-text: #3b0764;
+}
+
+/* Sunset Terracotta Theme */
+.theme-sunset-terracotta {
+  --bg-app: #faf8f5;
+  --bg-surface: #ffffff;
+  --bg-surface-subtle: #f5efe6;
+  --border-theme: #e7dec8;
+  --border-theme-subtle: #f4eee1;
+  
+  --brand-primary: #c2410c;
+  --brand-primary-hover: #9a3412;
+  --brand-primary-light: #ffedd5;
+  --brand-primary-dark: #7c2d12;
+  --brand-primary-ring: rgba(194, 65, 12, 0.2);
+
+  --brand-accent: #d97706;
+  --brand-accent-hover: #b45309;
+  --brand-accent-light: #fef3c7;
+  --brand-accent-dark: #92400e;
+
+  --text-main: #292524;
+  --text-muted: #78716c;
+  --text-heading: #7c2d12;
+  --nav-icon-bg: #7c2d12;
+  --selection-bg: #fed7aa;
+  --selection-text: #7c2d12;
+}
+
+body {
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  background-color: var(--bg-app);
+  color: var(--text-main);
+}
+
+::selection {
+  background-color: var(--selection-bg);
+  color: var(--selection-text);
+}
+
+
