@@ -15,5 +15,5 @@ View your app in AI Studio: https://ai.studio/apps/a0fd454f-a40d-4a8f-9bc3-ae649
 
 1. Install dependencies:
    `npm install`
-2. Run the app (generation uses the shared Bold Studio Gemini proxy; this app does not need its own API key):
+2. Run the app (generation uses the second Bold Studio Gemini proxy; this app does not need its own API key). If your proxy URL differs, set `VITE_ATTRACTION_PROXY_URL` in Vercel:
    `npm run dev`
