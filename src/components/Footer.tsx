@@ -16,12 +16,9 @@ export const Footer: React.FC = () => {
                 <span className="text-xs font-serif font-bold text-slate-900">
                   Attraction Content Studio
                 </span>
-                <span className="text-[10px] font-mono font-semibold bg-indigo-50 text-indigo-800 border border-indigo-200/60 px-1.5 py-0.2 rounded-md">
-                  ToursByLocals Edition
-                </span>
               </div>
               <p className="text-[11px] text-slate-500">
-                Automated SEO Travel Copywriting &amp; Brand Compliance Engine
+                Automated SEO Travel Copywriting &amp; Quality Engine
               </p>
             </div>
           </div>
@@ -34,14 +31,14 @@ export const Footer: React.FC = () => {
             </span>
             <span className="inline-flex items-center gap-1 bg-slate-100/80 px-2.5 py-1 rounded-full border border-slate-200/60">
               <ShieldCheck className="w-3 h-3 text-emerald-600" />
-              <span>Brand Rule Audited</span>
+              <span>Quality Audited</span>
             </span>
           </div>
 
           {/* Copyright & Creator Attribution */}
           <div className="text-center md:text-right text-xs text-slate-500 space-y-0.5">
             <p className="font-medium text-slate-700">
-              &copy; 2026 ToursByLocals Attraction Studio. Developed by <span className="font-semibold text-indigo-900">Ami - SEO Girl</span>. All rights reserved.
+              &copy; 2026 Attraction Content Studio. Developed by <span className="font-semibold text-indigo-900">Ami - SEO Girl</span>. All rights reserved.
             </p>
             <p className="text-[11px] text-slate-400">
               Crafted for private tour attraction marketing &amp; verified SEO storytelling.

@@ -250,13 +250,13 @@ export const AttractionsTab: React.FC<AttractionsTabProps> = ({
           <div className="space-y-2">
             <div className="flex items-center justify-between text-xs text-slate-300 font-mono uppercase tracking-wider">
               <span>Workflow Engine</span>
-              <span>ToursByLocals Copy</span>
+              <span>Attraction Content Studio Copy</span>
             </div>
             <h3 className="text-lg font-serif font-bold text-white">
               {items.length} Attraction{items.length === 1 ? '' : 's'} in Queue
             </h3>
             <p className="text-xs text-slate-300 leading-relaxed">
-              Researches reliable web sources, formats verified internal highlights, applies strict ToursByLocals tone standards, and validates compliance.
+              Researches reliable web sources, formats verified internal highlights, applies strict Attraction Content Studio tone standards, and validates compliance.
             </p>
           </div>
 

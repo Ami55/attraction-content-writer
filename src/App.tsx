@@ -19,8 +19,8 @@ import { RegenerateModal } from './components/RegenerateModal';
 import { HowItWorksModal } from './components/HowItWorksModal';
 import { Footer } from './components/Footer';
 
-const STORAGE_KEY_ITEMS = 'tbl_attractions_items_v2';
-const STORAGE_KEY_SETTINGS = 'tbl_attractions_settings_v2';
+const STORAGE_KEY_ITEMS = 'attraction_content_items_v2';
+const STORAGE_KEY_SETTINGS = 'attraction_content_settings_v2';
 
 const DEFAULT_SETTINGS: ProjectSettings = {
   additional_instructions: '',

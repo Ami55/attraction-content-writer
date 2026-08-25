@@ -65,7 +65,7 @@ export const ApprovedTab: React.FC<ApprovedTabProps> = ({
               </h2>
             </div>
             <p className="text-xs text-stone-600">
-              Verified, quality-audited descriptions ready for publishing on ToursByLocals attraction pages.
+              Verified, quality-audited descriptions ready for publishing on Attraction Content Studio attraction pages.
             </p>
           </div>
 
@@ -85,7 +85,7 @@ export const ApprovedTab: React.FC<ApprovedTabProps> = ({
             <button
               id="download-approved-csv-btn"
               type="button"
-              onClick={() => exportToCSV(approvedItems, 'toursbylocals_approved_content.csv')}
+              onClick={() => exportToCSV(approvedItems, 'approved_attraction_content.csv')}
               disabled={approvedItems.length === 0}
               className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-white bg-emerald-800 hover:bg-emerald-900 rounded-xl transition shadow-xs disabled:opacity-40 cursor-pointer"
             >

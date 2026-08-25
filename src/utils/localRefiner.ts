@@ -1,5 +1,5 @@
 import { AttractionResearch, QualityCheckResult } from '../types/attraction.js';
-import { BANNED_PHRASES, TBL_RULES } from '../constants/rules.js';
+import { BANNED_PHRASES, CONTENT_RULES } from '../constants/rules.js';
 
 export function performClientSafeRefinement(params: {
   attraction_name: string;
@@ -98,14 +98,14 @@ export function performClientSafeRefinement(params: {
   // 5. General or tone refinements
   else {
     changesMade.push(`Refined copy directly addressing: "${user_prompt.slice(0, 50)}"`);
-    assistantResponse = `Updated the draft according to your instructions while maintaining ToursByLocals copywriting guidelines.`;
+    assistantResponse = `Updated the draft according to your instructions while maintaining attraction copywriting guidelines.`;
   }
 
   // Ensure guide value in final paragraph
   if (paragraphs.length >= 2) {
     const lastIdx = paragraphs.length - 1;
-    if (!paragraphs[lastIdx].toLowerCase().includes('private guide') && !paragraphs[lastIdx].toLowerCase().includes('toursbylocals')) {
-      paragraphs[lastIdx] = `Exploring alongside a ToursByLocals private guide means uncovering these stories at your own pace with insider context tailored directly to your interests. Connect with a local guide to customize your ideal visit.`;
+    if (!paragraphs[lastIdx].toLowerCase().includes('private guide') && !paragraphs[lastIdx].toLowerCase().includes('private guide')) {
+      paragraphs[lastIdx] = `Exploring alongside a private local guide means uncovering these stories at your own pace with insider context tailored directly to your interests. Connect with a local guide to customize your ideal visit.`;
       changesMade.push('Verified closing invitation and guide value');
     }
   }
@@ -146,7 +146,7 @@ export function performClientSafeRefinement(params: {
       heading_valid: true,
       has_br_tags: true,
       has_guide_value: true,
-      no_first_person_tours_by_locals: true,
+      no_first_person_brand_voice: true,
       score: score,
     },
     changes_made: changesMade.length > 0 ? changesMade : ['Refined text according to user request', 'Maintained strict rule compliance'],

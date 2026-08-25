@@ -45,7 +45,7 @@ const OPTIONS: OptionItem[] = [
   {
     id: 'guide_value',
     label: 'Improve the guide-value paragraph',
-    desc: 'Strengthen how a ToursByLocals private guide provides tailored pacing, storytelling, and local depth.',
+    desc: 'Strengthen how a private local guide provides tailored pacing, storytelling, and local depth.',
   },
   {
     id: 'different_features',

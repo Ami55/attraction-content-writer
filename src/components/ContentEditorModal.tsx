@@ -55,7 +55,7 @@ interface ContentEditorModalProps {
 const QUICK_PROMPTS = [
   "Include creator/architect name (e.g., Antoni Gaudí)",
   "Highlight specific interior galleries, crypts & standout features",
-  "Strengthen ToursByLocals guide value in the final paragraph",
+  "Strengthen private local guide value in the final paragraph",
   "Make the tone more conversational & grounded",
   "Tighten length to ~210 words",
   "Deepen historical origins and founding context",
@@ -82,7 +82,7 @@ export const ContentEditorModal: React.FC<ContentEditorModalProps> = ({
     {
       id: 'welcome',
       role: 'assistant',
-      text: `Hello! I'm your ToursByLocals copy editor for **${item.attraction_name}**. Tell me how you'd like to refine this draft — for instance, if it's missing key figures (like Antoni Gaudí), specific internal exhibits, or needs a tighter word count.`,
+      text: `Hello! I'm your attraction copy editor for **${item.attraction_name}**. Tell me how you'd like to refine this draft — for instance, if it's missing key figures (like Antoni Gaudí), specific internal exhibits, or needs a tighter word count.`,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     },
   ]);
@@ -96,7 +96,7 @@ export const ContentEditorModal: React.FC<ContentEditorModalProps> = ({
 
   const AGENT_STEPS = [
     { label: 'Analyzing instructions & entities', detail: `Extracting key figures, architectural features & style for ${item.attraction_name}` },
-    { label: 'Drafting grounded copy', detail: 'Writing 3-4 descriptive paragraphs with <br><br> and ToursByLocals guide value' },
+    { label: 'Drafting grounded copy', detail: 'Writing 3-4 descriptive paragraphs with <br><br> and private local guide value' },
     { label: 'Auditing compliance & tone', detail: 'Verifying 8th-grade level, word count (180–260), and zero banned clichés' },
     { label: 'Syncing live draft', detail: 'Applying changes to editor and calculating quality score' },
   ];
@@ -1051,7 +1051,7 @@ export const ContentEditorModal: React.FC<ContentEditorModalProps> = ({
               <div className="max-w-3xl mx-auto w-full bg-white rounded-2xl border border-slate-200 p-8 shadow-xs space-y-6">
                 <div className="border-b border-slate-200 pb-4">
                   <span className="text-xs uppercase tracking-wider font-bold text-indigo-600 block mb-1">
-                    ToursByLocals Page Preview
+                    Attraction Page Preview
                   </span>
                   <h2 className="text-2xl font-serif font-bold text-slate-900">
                     {heading}
@@ -1132,8 +1132,8 @@ function promptToSendForChip(chipText: string, attractionName: string): string {
   if (chipText.includes('interior galleries')) {
     return `Highlight 2-3 specific internal exhibits, crypts, towers, or standout architectural features inside ${attractionName}.`;
   }
-  if (chipText.includes('ToursByLocals guide value')) {
-    return `Strengthen the final paragraph explaining how a private ToursByLocals guide provides tailored pacing, deep historical stories, practical navigation tips, and itinerary customization.`;
+  if (chipText.includes('private local guide value')) {
+    return `Strengthen the final paragraph explaining how a private private local guide provides tailored pacing, deep historical stories, practical navigation tips, and itinerary customization.`;
   }
   if (chipText.includes('conversational')) {
     return `Refine the tone to be more conversational and observational, using natural contractions and human rhythm while preserving all factual depth.`;

@@ -278,7 +278,7 @@ export const GeneratedContentTab: React.FC<GeneratedContentTabProps> = ({
                       {isProcessing && <RefreshCw className="w-3 h-3 animate-spin" />}
                       {item.status === 'waiting' && 'Waiting in queue'}
                       {item.status === 'researching' && 'Researching web sources...'}
-                      {item.status === 'writing' && 'Writing ToursByLocals copy...'}
+                      {item.status === 'writing' && 'Writing attraction copy...'}
                       {item.status === 'checking' && 'Running quality audit...'}
                       {item.status === 'complete' && 'Generation Complete'}
                       {item.status === 'needs_clarification' && 'Needs Clarification'}

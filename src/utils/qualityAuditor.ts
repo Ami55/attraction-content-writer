@@ -56,7 +56,7 @@ export function inspectContentLive(
   }
   if (!hasBrTags) issues.push('Missing <br><br> tags at paragraph ends');
   if (bannedWords.length > 0) issues.push(`Banned phrases: ${bannedWords.join(', ')}`);
-  if (hasQuestions) issues.push('Contains questions (prohibited in ToursByLocals tone)');
+  if (hasQuestions) issues.push('Contains questions (prohibited in Attraction Content Studio tone)');
   if (hasBulletPoints) issues.push('Contains bullet points (plain paragraphs required)');
   if (hasFirstPerson) issues.push('Contains first-person language (we, our, let\'s)');
 

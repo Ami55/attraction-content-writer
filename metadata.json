@@ -1,6 +1,6 @@
 {
   "name": "Attraction Content Writer",
-  "description": "AI-powered marketing copywriter and researcher for ToursByLocals attraction pages with quality control, batch processing, and export.",
+  "description": "AI-powered marketing copywriter and researcher for Attraction Content Studio attraction pages with quality control, batch processing, and export.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

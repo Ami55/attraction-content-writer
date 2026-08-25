@@ -35,7 +35,7 @@ export const HowItWorksModal: React.FC<HowItWorksModalProps> = ({ isOpen, onClos
             </div>
             <div>
               <h2 className="text-base font-serif font-bold text-slate-900">How It Works</h2>
-              <p className="text-xs text-slate-500">ToursByLocals Attraction Marketing &amp; Copy Engine</p>
+              <p className="text-xs text-slate-500">Attraction Content Studio Attraction Marketing &amp; Copy Engine</p>
             </div>
           </div>
           <button

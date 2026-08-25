@@ -81,9 +81,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <h1 className="text-base font-serif font-bold text-slate-900 leading-tight">
                   Attraction Content Writer
                 </h1>
-                <span className="text-[10px] font-mono font-semibold bg-indigo-50 text-indigo-800 border border-indigo-200/60 px-2 py-0.5 rounded-full">
-                  ToursByLocals
-                </span>
               </div>
               <p className="text-[11px] text-slate-500 font-medium">
                 Research &amp; Verified Marketing Copy Engine

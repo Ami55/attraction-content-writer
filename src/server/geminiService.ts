@@ -138,7 +138,7 @@ export async function researchAttraction(
   const searchQuery = `${input.attraction_name} ${locationStr} official history architect artist notable people key entities architectural features artworks exhibits`;
 
   const researchPrompt = `
-You are a factual travel researcher for ToursByLocals.
+You are a factual travel researcher for Attraction Content Studio.
 Your job is to research the specific attraction below and provide verified, factual data from reliable sources (official sites, tourism boards, cultural heritage databases, UNESCO, etc.).
 
 Target Attraction: "${input.attraction_name}"
@@ -160,7 +160,7 @@ RESEARCH INSTRUCTIONS:
    - Historical or cultural significance and founding dates
    - Key Entities: Notable people (named architects, master builders, artists, rulers, founders like Antoni Gaudí, Filippo Brunelleschi, Bernini, Michelangelo), specific historical events/eras, architectural styles & structural elements, and specific artworks/relics/facades
    - 3 to 4 standout architectural features, specific internal areas, exhibits, galleries, crypts, towers, viewpoints, or real moments located INSIDE the attraction
-   - How a private local ToursByLocals guide adds value (insider storytelling, architectural context, practical advice, tailored pacing, customizable itinerary)
+   - How a private local guide adds value (insider storytelling, architectural context, practical advice, tailored pacing, customizable itinerary)
    - Any details requiring caution or verification
 
 Return your response strictly as valid JSON with this structure:
@@ -306,7 +306,7 @@ Return your response strictly as valid JSON with this structure:
 }
 
 /**
- * Step 2: Generate ToursByLocals Marketing Description
+ * Step 2: Generate Attraction Marketing Description
  */
 export async function generateAttractionDescription(
   input: ResearchAndGenerateInput,
@@ -355,7 +355,7 @@ DO NOT reuse these opening patterns or concluding sentences. Vary your sentence 
         regenInstruction = 'REGENERATION DIRECTIVE: Focus heavily on the visitor sensory experience, what travellers touch, see, feel, and explore while walking inside.';
         break;
       case 'guide_value':
-        regenInstruction = 'REGENERATION DIRECTIVE: Strengthen the final paragraph explaining exactly why having a private ToursByLocals guide provides indispensable depth, context, and customization.';
+        regenInstruction = 'REGENERATION DIRECTIVE: Strengthen the final paragraph explaining exactly why having a private private local guide provides indispensable depth, context, and customization.';
         break;
       case 'different_features':
         regenInstruction = 'REGENERATION DIRECTIVE: Focus on completely different internal features and highlights than a standard overview.';
@@ -371,7 +371,7 @@ DO NOT reuse these opening patterns or concluding sentences. Vary your sentence 
   const customNotesSection = input.notes ? `\nAttraction-Specific Notes/Focus Directives: "${input.notes}"\n(Incorporate these specific elements, entities, and highlights naturally into the copy.)\n` : '';
   const userInstructionsSection = input.additional_instructions ? `\nAdditional Global Instructions: "${input.additional_instructions}"\n` : '';
 
-  const prompt = `You're a SEO travel copywriter writing for ToursByLocals, a company offering customizable, private tours.
+  const prompt = `You're a SEO travel copywriter writing for Attraction Content Studio, a company offering customizable, private tours.
 
 Write content for a subheading section introducing ${attractionName} and the reasons it's worth visiting with a private guide.
 
@@ -401,7 +401,7 @@ Content format:
 Write in plain descriptive paragraphs, no labels or colons. Each paragraph ends with <br><br>
 Paragraph 1: introduce ${attractionName} and why it's worth visiting (mention its significance or setting).
 Middle paragraphs: cover 2–3 standout features, areas, or moments within the attraction, woven into natural prose rather than listed out.
-Final paragraph: close on how a ToursByLocals guide adds value and can tailor the experience to the traveller.
+Final paragraph: close on how a private local guide adds value and can tailor the experience to the traveller.
 Not every attraction needs the same number of paragraphs or the same depth — let the content match what the attraction actually offers, but keep the overall section tight enough to fit a sidebar-sized block of text, not a long-form article.
 
 Content Rules:
@@ -520,7 +520,7 @@ export async function qualityCheckAndRevise(
     issues.push('Contains bullet points or numbered lists.');
   }
 
-  // Check first-person ToursByLocals
+  // Check first-person Attraction Content Studio
   const hasFirstPerson = /\b(we|our|ours|let's|lets)\b/i.test(cleaned.content);
   if (hasFirstPerson) {
     issues.push('Contains first-person language (we, our, let\'s).');
@@ -572,7 +572,7 @@ export async function qualityCheckAndRevise(
     try {
       const ai = getGeminiClient();
       const revisePrompt = `
-You are a senior editor for ToursByLocals.
+You are a senior editor for Attraction Content Studio.
 A generated draft for "${attractionName}" failed quality validation with these issues:
 ${issues.map(i => `- ${i}`).join('\n')}
 
@@ -588,7 +588,7 @@ REVISE THE DRAFT TO 100% COMPLY WITH ALL RULES:
 6. Keep facts accurate to ${attractionName}.
 7. Paragraph 1: Setting & significance.
    Middle Paragraph(s): 2-3 specific internal features/areas.
-   Final Paragraph: ToursByLocals private guide value (customization, deep stories, flexible pacing) ending with an invitation to explore tours or customize their itinerary.
+   Final Paragraph: private local guide value (customization, deep stories, flexible pacing) ending with an invitation to explore tours or customize their itinerary.
 8. Output ONLY the revised text with the exact heading and paragraphs ending with <br><br>.
 `;
 
@@ -636,8 +636,8 @@ REVISE THE DRAFT TO 100% COMPLY WITH ALL RULES:
     word_count_valid: finalWordCount >= 170 && finalWordCount <= 275,
     heading_valid: true,
     has_br_tags: cleaned.content.includes('<br><br>'),
-    has_guide_value: /guide|toursbylocals|private tour|itinerary|customiz/i.test(cleaned.content),
-    no_first_person_tours_by_locals: !/\b(we|our|ours|let's)\b/i.test(cleaned.content),
+    has_guide_value: /guide|private guide|private tour|itinerary|customiz/i.test(cleaned.content),
+    no_first_person_brand_voice: !/\b(we|our|ours|let's)\b/i.test(cleaned.content),
     tone_score: passed ? 'Optimal (8th grade reading level, conversational & grounded)' : 'Acceptable',
     details: {
       word_count: finalWordCount,
@@ -692,7 +692,7 @@ export async function processSingleAttraction(
             heading_valid: false,
             has_br_tags: false,
             has_guide_value: false,
-            no_first_person_tours_by_locals: true,
+            no_first_person_brand_voice: true,
           },
         };
       }
@@ -753,7 +753,7 @@ export async function processSingleAttraction(
         heading_valid: false,
         has_br_tags: false,
         has_guide_value: false,
-        no_first_person_tours_by_locals: true,
+        no_first_person_brand_voice: true,
       },
     };
   }
@@ -782,7 +782,7 @@ export interface ChatAndRefineResponse {
 }
 
 /**
- * Interactive Chat & Refine for ToursByLocals Copywriting
+ * Interactive Chat & Refine for Attraction Copywriting
  */
 export async function chatAndRefineAttractionDescription(
   input: ChatAndRefineInput
@@ -800,7 +800,7 @@ export async function chatAndRefineAttractionDescription(
   }
 
   const prompt = `
-You are an expert Senior Copy Editor for ToursByLocals.
+You are an expert Senior Copy Editor for Attraction Content Studio.
 You are interacting with a travel content manager in an interactive editing session for "${attractionName}" (${locationStr || 'Location'}).
 
 The manager has provided feedback/instruction to refine the current attraction marketing copy.
@@ -828,14 +828,14 @@ YOUR TASK:
 1. Carefully analyze what the user wants changed.
    - If the user asks to include the creator/architect/founder (e.g., Antoni Gaudí, Filippo Brunelleschi, Bernini, Michelangelo, or whichever historical figure designed/founded the attraction): You MUST explicitly incorporate their full name and specific design contribution into Paragraph 1 or Paragraph 2.
    - If they request specific internal areas (stained glass, crypts, towers), weave 2-3 real places into descriptive prose.
-2. Rewrite and refine the draft to directly fulfill the user's request while strictly adhering to ALL ToursByLocals copywriting rules:
+2. Rewrite and refine the draft to directly fulfill the user's request while strictly adhering to ALL attraction copywriting rules:
    - Line 1 Heading: MUST be exactly "${exactHeading}"
    - Paragraphs: Plain descriptive paragraphs (typically 3 or 4 paragraphs), each ending with "<br><br>"
    - Length: Strictly 180 to 260 words (excluding heading)
    - Entities & Specifics: Naturally incorporate notable people (e.g. architects like Antoni Gaudí, artists, historical founders), specific architectural styles/elements, and 2-3 real internal places/moments per paragraph. Do not force them in or make stylized fragment lists.
    - Tone & Voice: Conversational, observational, direct, and grounded (8th-grade comprehension level). Use contractions. Vary sentence length and structure.
    - Prohibitions: No questions, no bulleted lists, no introductory sentences before the heading, no "we", "our", "let's", and NO banned words ("hidden gem", "magical", "nestled", "must-see", "bucket-list", "breathtaking", "something for everyone", "step back in time", "rich tapestry", "immerse yourself", "vibrant", "unique glimpse", "history buff", "more than just", "it's not just").
-   - Final Paragraph: Explain how a knowledgeable ToursByLocals guide adds value through stories, context, practical advice, and a personal experience. Emphasize flexibility and convenience of a private tour, ending by encouraging travellers to explore available tours or customize their itinerary.
+   - Final Paragraph: Explain how a knowledgeable private local guide adds value through stories, context, practical advice, and a personal experience. Emphasize flexibility and convenience of a private tour, ending by encouraging travellers to explore available tours or customize their itinerary.
 3. Compose a clear, friendly, and helpful 1-2 sentence assistant response explaining the specific edits made in response to their prompt.
 4. List 2 to 3 bullet points in "changes_made" summarizing the exact improvements.
 
@@ -930,7 +930,7 @@ Return your response strictly as valid JSON with this exact structure:
         heading_valid: true,
         has_br_tags: cleanContent.includes('<br><br>'),
         has_guide_value: true,
-        no_first_person_tours_by_locals: !/\b(we|our|ours|let's|lets)\b/i.test(cleanContent),
+        no_first_person_brand_voice: !/\b(we|our|ours|let's|lets)\b/i.test(cleanContent),
         score: score,
       },
       changes_made: changesMade,

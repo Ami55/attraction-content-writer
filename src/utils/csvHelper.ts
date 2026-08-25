@@ -181,7 +181,7 @@ export function parsePastedText(rawText: string): Partial<AttractionItem>[] {
 /**
  * Export attractions to CSV strictly with required columns
  */
-export function exportToCSV(items: AttractionItem[], filename = 'toursbylocals_attraction_content.csv') {
+export function exportToCSV(items: AttractionItem[], filename = 'attraction_content.csv') {
   const headers = [
     'attraction_name',
     'city',
@@ -220,7 +220,7 @@ export function exportToCSV(items: AttractionItem[], filename = 'toursbylocals_a
 /**
  * Export attractions to formatted JSON
  */
-export function exportToJSON(items: AttractionItem[], filename = 'toursbylocals_attractions.json') {
+export function exportToJSON(items: AttractionItem[], filename = 'attractions.json') {
   const jsonContent = JSON.stringify(items, null, 2);
   downloadBlob(jsonContent, filename, 'application/json;charset=utf-8;');
 }

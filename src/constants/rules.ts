@@ -27,7 +27,7 @@ export const BANNED_PHRASES = [
   ' ours ',
 ];
 
-export const TBL_RULES = {
+export const CONTENT_RULES = {
   SUBHEADING_PREFIX: 'See the best of ',
   SUBHEADING_SUFFIX: ' with a private guide',
   MIN_WORDS: 180,
@@ -36,7 +36,7 @@ export const TBL_RULES = {
   DELIMITER: '<br><br>',
 };
 
-export const ORIGINAL_PROMPT_TEMPLATE = `You're a SEO travel copywriter writing for ToursByLocals, a company offering customizable, private tours.
+export const ORIGINAL_PROMPT_TEMPLATE = `You're a SEO travel copywriter writing for Attraction Content Studio, a company offering customizable, private tours.
 
 Write content for a subheading section introducing [Attraction Name] and the reasons it's worth visiting with a private guide.
 
@@ -56,7 +56,7 @@ Content format:
 Write in plain descriptive paragraphs, no labels or colons. Each paragraph ends with <br><br>
 Paragraph 1: introduce [Attraction Name] and why it's worth visiting (mention its significance or setting).
 Middle paragraphs: cover 2–3 standout features, areas, or moments within the attraction, woven into natural prose rather than listed out.
-Final paragraph: close on how a ToursByLocals guide adds value and can tailor the experience to the traveller.
+Final paragraph: close on how a private local guide adds value and can tailor the experience to the traveller.
 Not every attraction needs the same number of paragraphs or the same depth — let the content match what the attraction actually offers, but keep the overall section tight enough to fit a sidebar-sized block of text, not a long-form article.
 
 Content Rules:

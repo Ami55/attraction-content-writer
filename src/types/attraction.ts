@@ -39,7 +39,7 @@ export interface QualityCheckResult {
   heading_valid: boolean;
   has_br_tags: boolean;
   has_guide_value: boolean;
-  no_first_person_tours_by_locals: boolean;
+  no_first_person_brand_voice: boolean;
   tone_score?: string;
   details?: {
     word_count: number;

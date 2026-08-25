@@ -76,7 +76,7 @@ export const ExportTab: React.FC<ExportTabProps> = ({ items }) => {
             <button
               id="export-download-json-btn"
               type="button"
-              onClick={() => exportToJSON(exportItems, `toursbylocals_attractions_${scope}.json`)}
+              onClick={() => exportToJSON(exportItems, `attractions_${scope}.json`)}
               disabled={exportItems.length === 0}
               className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-stone-800 bg-stone-100 hover:bg-stone-200 border border-stone-300 rounded-xl transition shadow-2xs disabled:opacity-40 cursor-pointer"
             >
@@ -87,7 +87,7 @@ export const ExportTab: React.FC<ExportTabProps> = ({ items }) => {
             <button
               id="export-download-csv-btn"
               type="button"
-              onClick={() => exportToCSV(exportItems, `toursbylocals_attractions_${scope}.csv`)}
+              onClick={() => exportToCSV(exportItems, `attractions_${scope}.csv`)}
               disabled={exportItems.length === 0}
               className="inline-flex items-center gap-2 px-5 py-2 text-xs font-semibold text-white bg-emerald-800 hover:bg-emerald-900 rounded-xl transition shadow-xs disabled:opacity-40 cursor-pointer"
             >
