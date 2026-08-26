@@ -56,39 +56,55 @@ async function parseErrorMessage(response: Response): Promise<string> {
 }
 
 async function safeFetchJson<T>(url: string, options: RequestInit): Promise<T> {
-  const controller = new AbortController();
-  const timeoutId = window.setTimeout(() => controller.abort('Request timed out'), 65000);
   const externalSignal = options.signal;
-  const abortFromExternal = () => controller.abort(externalSignal?.reason);
-  if (externalSignal) {
-    if (externalSignal.aborted) abortFromExternal();
-    else externalSignal.addEventListener('abort', abortFromExternal, { once: true });
-  }
+  const maxAttempts = 2;
 
-  let response: Response;
-  try {
-    response = await fetch(url, { ...options, signal: controller.signal });
-  } catch (error: any) {
-    if (controller.signal.aborted && !externalSignal?.aborted) {
-      throw new Error('This attraction took longer than 65 seconds. It was stopped so the rest of the batch could continue. Retry this item separately.');
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    if (externalSignal?.aborted) throw new DOMException('Generation stopped', 'AbortError');
+
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(() => controller.abort('Request timed out'), 55000);
+    const abortFromExternal = () => controller.abort(externalSignal?.reason);
+    if (externalSignal) externalSignal.addEventListener('abort', abortFromExternal, { once: true });
+
+    let response: Response;
+    try {
+      response = await fetch(url, { ...options, signal: controller.signal });
+    } catch (error: any) {
+      if (externalSignal?.aborted) throw new DOMException('Generation stopped', 'AbortError');
+      if (attempt < maxAttempts) {
+        await new Promise((resolve) => window.setTimeout(resolve, 1800));
+        continue;
+      }
+      if (controller.signal.aborted) {
+        throw new Error('This attraction did not respond after two attempts. Retry it separately in a moment.');
+      }
+      throw new Error('The proxy connection failed twice. Check your connection and retry this attraction.');
+    } finally {
+      window.clearTimeout(timeoutId);
+      externalSignal?.removeEventListener('abort', abortFromExternal);
     }
-    throw error;
-  } finally {
-    window.clearTimeout(timeoutId);
-    externalSignal?.removeEventListener('abort', abortFromExternal);
+
+    const retriableStatus = response.status === 429 || response.status >= 500;
+    if (!response.ok && retriableStatus && attempt < maxAttempts) {
+      await new Promise((resolve) => window.setTimeout(resolve, response.status === 429 ? 4000 : 1800));
+      continue;
+    }
+
+    if (!response.ok) {
+      const msg = await parseErrorMessage(response);
+      throw new Error(msg);
+    }
+
+    const text = await response.text();
+    try {
+      return JSON.parse(text) as T;
+    } catch {
+      throw new Error(`Invalid JSON response received from ${url}`);
+    }
   }
 
-  if (!response.ok) {
-    const msg = await parseErrorMessage(response);
-    throw new Error(msg);
-  }
-
-  const text = await response.text();
-  try {
-    return JSON.parse(text) as T;
-  } catch {
-    throw new Error(`Invalid JSON response received from ${url}`);
-  }
+  throw new Error('Request failed after retrying.');
 }
 
 export async function processAttractionApi(

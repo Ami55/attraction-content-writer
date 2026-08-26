@@ -41,11 +41,15 @@ export default function App() {
     try {
       const saved = localStorage.getItem(STORAGE_KEY_ITEMS);
       if (saved) {
-        return JSON.parse(saved).map((item: AttractionItem) =>
-          ['researching', 'writing', 'checking'].includes(item.status)
-            ? { ...item, status: 'failed' as GenerationStatus, error_message: 'The previous request was interrupted. Retry this item.' }
-            : item
-        );
+        return JSON.parse(saved).map((item: AttractionItem) => {
+          if (item.status === 'failed' && item.content) {
+            return { ...item, status: 'complete' as GenerationStatus, error_message: undefined };
+          }
+          if (['researching', 'writing', 'checking'].includes(item.status)) {
+            return { ...item, status: 'failed' as GenerationStatus, error_message: 'The previous request was interrupted. Retry this item.' };
+          }
+          return item;
+        });
       }
     } catch (e) {
       console.warn('Failed to load saved items from localStorage', e);
@@ -185,8 +189,9 @@ export default function App() {
       console.error(`Processing error for ${targetItem.attraction_name}:`, err);
       const failedItem: AttractionItem = {
         ...targetItem,
-        status: 'failed',
-        error_message: err.message || 'Processing failed',
+        // Never replace previously completed/approved copy with an error card.
+        status: targetItem.content ? 'complete' : 'failed',
+        error_message: targetItem.content ? undefined : (err.message || 'Processing failed'),
       };
       setItems((prev) => prev.map((i) => (i.id === targetItem.id ? failedItem : i)));
       return failedItem;
@@ -225,7 +230,7 @@ export default function App() {
 
   const handleGenerateAll = () => {
     const targets = items.filter((i) => i.status !== 'complete');
-    runBatchGeneration(targets.length > 0 ? targets : items);
+    if (targets.length > 0) runBatchGeneration(targets);
   };
 
   const handleGenerateSelected = () => {
