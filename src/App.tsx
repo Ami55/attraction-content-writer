@@ -177,6 +177,11 @@ export default function App() {
         research: response.research,
         quality_status: response.quality_check?.passed ? 'passed' : 'warning',
         quality_check: response.quality_check,
+        rule_compliance: response.rule_compliance,
+        applied_rules: response.applied_rules,
+        active_word_range: response.active_word_range,
+        rules_fingerprint: response.rules_fingerprint,
+        proxy_version: response.proxy_version,
         last_updated_at: new Date().toISOString(),
       };
 
@@ -311,6 +316,7 @@ export default function App() {
             onUpdateSettings={setSettings}
             onGenerateAll={handleGenerateAll}
             onGenerateSelected={handleGenerateSelected}
+            onGenerateItem={(item) => { void processItemAsync(item, undefined, item.status === 'complete' ? 'full' : undefined); }}
             onStopGeneration={handleStopGeneration}
             onNavigateToGenerated={() => setActiveTab('generated')}
           />

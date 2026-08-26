@@ -29,6 +29,7 @@ interface AttractionsTabProps {
   onUpdateSettings: (settings: ProjectSettings) => void;
   onGenerateAll: () => void;
   onGenerateSelected: () => void;
+  onGenerateItem: (item: AttractionItem) => void;
   onStopGeneration: () => void;
   onNavigateToGenerated: () => void;
 }
@@ -41,6 +42,7 @@ export const AttractionsTab: React.FC<AttractionsTabProps> = ({
   onUpdateSettings,
   onGenerateAll,
   onGenerateSelected,
+  onGenerateItem,
   onStopGeneration,
   onNavigateToGenerated,
 }) => {
@@ -666,6 +668,15 @@ CN Tower	Toronto	Canada"
 
                       {/* Actions */}
                       <td className="p-3.5 text-center">
+                        <button
+                          type="button"
+                          onClick={() => onGenerateItem(item)}
+                          disabled={isGenerating || ['researching', 'writing', 'checking'].includes(item.status)}
+                          className="mr-1 p-1 text-indigo-600 hover:text-indigo-900 rounded transition disabled:opacity-30"
+                          title={item.status === 'complete' ? 'Regenerate this attraction using current rules' : 'Generate this attraction only'}
+                        >
+                          {item.status === 'complete' ? <RefreshCw className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+                        </button>
                         <button
                           id={`delete-row-${item.id}`}
                           type="button"

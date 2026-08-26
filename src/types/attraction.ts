@@ -75,6 +75,11 @@ export interface AttractionItem {
   research?: AttractionResearch;
   quality_status?: QualityStatus;
   quality_check?: QualityCheckResult;
+  rule_compliance?: Array<{ rule_title: string; passed: boolean; evidence: string }>;
+  applied_rules?: Array<{ title: string; description: string }>;
+  active_word_range?: { min: number; max: number } | null;
+  rules_fingerprint?: string;
+  proxy_version?: string;
   
   // Review & Approval state
   is_approved?: boolean;
@@ -102,6 +107,7 @@ export interface CopywritingRule {
 }
 
 export type RegenerateOption =
+  | 'full'
   | 'specific'
   | 'conversational'
   | 'shorten'

@@ -30,6 +30,11 @@ export interface ProcessAttractionResponse {
   word_count: number;
   research: AttractionResearch;
   quality_check: QualityCheckResult;
+  rule_compliance?: Array<{ rule_title: string; passed: boolean; evidence: string }>;
+  applied_rules?: Array<{ title: string; description: string }>;
+  active_word_range?: { min: number; max: number } | null;
+  rules_fingerprint?: string;
+  proxy_version?: string;
 }
 
 async function parseErrorMessage(response: Response): Promise<string> {
@@ -172,9 +177,9 @@ export async function refineWithChatApi(
   });
 }
 
-export async function testApiConnection(): Promise<{ status: string; apiKeyConfigured: boolean }> {
+export async function testApiConnection(): Promise<{ status: string; apiKeyConfigured: boolean; proxyVersion?: string; dynamicRules?: boolean }> {
   try {
-    return await safeFetchJson<{ status: string; apiKeyConfigured: boolean }>(PROXY_URL, {
+    return await safeFetchJson<{ status: string; apiKeyConfigured: boolean; proxyVersion?: string; dynamicRules?: boolean }>(PROXY_URL, {
       method: 'GET',
     });
   } catch {

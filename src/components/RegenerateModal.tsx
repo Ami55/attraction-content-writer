@@ -18,6 +18,12 @@ interface OptionItem {
 
 const OPTIONS: OptionItem[] = [
   {
+    id: 'full',
+    label: 'Regenerate the full response',
+    desc: 'Rewrite the complete response from scratch using the latest saved project instructions and rules.',
+    badge: 'Recommended',
+  },
+  {
     id: 'specific',
     label: 'Make it more specific',
     desc: 'Incorporate concrete names of specific rooms, artworks, dates, and architectural elements.',
@@ -65,7 +71,7 @@ export const RegenerateModal: React.FC<RegenerateModalProps> = ({
   onRegenerate,
   isProcessing = false,
 }) => {
-  const [selectedOption, setSelectedOption] = useState<RegenerateOption>('specific');
+  const [selectedOption, setSelectedOption] = useState<RegenerateOption>('full');
   const [customText, setCustomText] = useState('');
 
   if (!item) return null;
@@ -143,7 +149,7 @@ export const RegenerateModal: React.FC<RegenerateModalProps> = ({
                     <div className="flex-1">
                       <div className="text-sm font-medium text-stone-900 flex items-center justify-between">
                         <span>{opt.label}</span>
-                        {isSelected && <CheckCircle2 className="w-4 h-4 text-emerald-700" />}
+                        <span className="flex items-center gap-2">{opt.badge && <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-semibold text-emerald-800">{opt.badge}</span>}{isSelected && <CheckCircle2 className="w-4 h-4 text-emerald-700" />}</span>
                       </div>
                       <p className="text-xs text-stone-600 mt-0.5">{opt.desc}</p>
                     </div>
