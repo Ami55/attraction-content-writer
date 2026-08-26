@@ -21,6 +21,25 @@ export interface AttractionResearch {
   attraction_type?: string;
   location_confirmed?: string;
   significance?: string;
+  core_entities?: {
+    place: string;
+    type: string;
+    key_periods: string[];
+    people: string[];
+    defining_features: string[];
+    religious_identity: string;
+    nearby_landmarks: string[];
+  };
+  information_guide?: {
+    introduction_and_significance: string;
+    history: string;
+    main_features: string;
+    what_to_look_for: string;
+    stories_and_lesser_known_details: string;
+    planning_the_visit: string;
+    combining_with_nearby_places: string;
+    value_of_a_private_guide: string;
+  };
   key_entities: string[];
   standout_features: string[];
   guide_value_points: string[];

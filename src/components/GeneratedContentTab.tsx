@@ -45,6 +45,7 @@ export const GeneratedContentTab: React.FC<GeneratedContentTabProps> = ({
   const [filter, setFilter] = useState<'all' | 'complete' | 'needs_clarification' | 'approved' | 'failed'>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [openBriefs, setOpenBriefs] = useState<Record<string, boolean>>({});
 
   const completedCount = items.filter((i) => i.status === 'complete').length;
   const clarificationCount = items.filter((i) => i.status === 'needs_clarification').length;
@@ -395,6 +396,69 @@ export const GeneratedContentTab: React.FC<GeneratedContentTabProps> = ({
                             .join(''),
                         }}
                       />
+
+                      {item.research?.information_guide && (
+                        <div className="pt-4 border-t border-stone-200">
+                          <button
+                            type="button"
+                            onClick={() => setOpenBriefs((previous) => ({ ...previous, [item.id]: !previous[item.id] }))}
+                            className="w-full flex items-center justify-between rounded-xl border border-indigo-200 bg-indigo-50/60 px-4 py-3 text-left hover:bg-indigo-50 transition"
+                          >
+                            <div>
+                              <p className="text-sm font-semibold text-indigo-950">Attraction Knowledge Brief</p>
+                              <p className="text-xs text-indigo-700">Entities, history, features, visit planning and nearby places</p>
+                            </div>
+                            <span className="text-xs font-semibold text-indigo-800">{openBriefs[item.id] ? 'Hide details' : 'View details'}</span>
+                          </button>
+
+                          {openBriefs[item.id] && (
+                            <div className="mt-3 space-y-4 rounded-xl border border-stone-200 bg-stone-50/60 p-4">
+                              {item.research.core_entities && (
+                                <div>
+                                  <h5 className="text-xs font-bold uppercase tracking-wider text-stone-500 mb-2">Core entities & relationships</h5>
+                                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                    {[
+                                      ['Place', item.research.core_entities.place],
+                                      ['Type', item.research.core_entities.type],
+                                      ['Key periods', item.research.core_entities.key_periods?.join(', ')],
+                                      ['People', item.research.core_entities.people?.join(', ')],
+                                      ['Defining features', item.research.core_entities.defining_features?.join(', ')],
+                                      ['Religious identity', item.research.core_entities.religious_identity],
+                                      ['Nearby landmarks', item.research.core_entities.nearby_landmarks?.join(', ')],
+                                    ].filter(([, value]) => value).map(([label, value]) => (
+                                      <div key={label} className="rounded-lg border border-stone-200 bg-white p-3">
+                                        <p className="text-[10px] font-bold uppercase tracking-wider text-stone-500">{label}</p>
+                                        <p className="mt-1 text-xs leading-relaxed text-stone-800">{value}</p>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+
+                              <div>
+                                <h5 className="text-xs font-bold uppercase tracking-wider text-stone-500 mb-2">Recommended information</h5>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                  {[
+                                    ['Introduction & significance', item.research.information_guide.introduction_and_significance],
+                                    ['History', item.research.information_guide.history],
+                                    ['Main features', item.research.information_guide.main_features],
+                                    ['What to look for', item.research.information_guide.what_to_look_for],
+                                    ['Stories & lesser-known details', item.research.information_guide.stories_and_lesser_known_details],
+                                    ['Planning the visit', item.research.information_guide.planning_the_visit],
+                                    ['Combining with nearby places', item.research.information_guide.combining_with_nearby_places],
+                                    ['Value of a private guide', item.research.information_guide.value_of_a_private_guide],
+                                  ].map(([label, value]) => (
+                                    <article key={label} className="rounded-lg border border-stone-200 bg-white p-3">
+                                      <h6 className="text-xs font-semibold text-emerald-950">{label}</h6>
+                                      <p className="mt-1 text-xs leading-relaxed text-stone-700">{value || 'Not enough verified information was found.'}</p>
+                                    </article>
+                                  ))}
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
