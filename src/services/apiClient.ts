@@ -56,7 +56,27 @@ async function parseErrorMessage(response: Response): Promise<string> {
 }
 
 async function safeFetchJson<T>(url: string, options: RequestInit): Promise<T> {
-  const response = await fetch(url, options);
+  const controller = new AbortController();
+  const timeoutId = window.setTimeout(() => controller.abort('Request timed out'), 65000);
+  const externalSignal = options.signal;
+  const abortFromExternal = () => controller.abort(externalSignal?.reason);
+  if (externalSignal) {
+    if (externalSignal.aborted) abortFromExternal();
+    else externalSignal.addEventListener('abort', abortFromExternal, { once: true });
+  }
+
+  let response: Response;
+  try {
+    response = await fetch(url, { ...options, signal: controller.signal });
+  } catch (error: any) {
+    if (controller.signal.aborted && !externalSignal?.aborted) {
+      throw new Error('This attraction took longer than 65 seconds. It was stopped so the rest of the batch could continue. Retry this item separately.');
+    }
+    throw error;
+  } finally {
+    window.clearTimeout(timeoutId);
+    externalSignal?.removeEventListener('abort', abortFromExternal);
+  }
 
   if (!response.ok) {
     const msg = await parseErrorMessage(response);

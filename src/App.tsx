@@ -41,7 +41,11 @@ export default function App() {
     try {
       const saved = localStorage.getItem(STORAGE_KEY_ITEMS);
       if (saved) {
-        return JSON.parse(saved);
+        return JSON.parse(saved).map((item: AttractionItem) =>
+          ['researching', 'writing', 'checking'].includes(item.status)
+            ? { ...item, status: 'failed' as GenerationStatus, error_message: 'The previous request was interrupted. Retry this item.' }
+            : item
+        );
       }
     } catch (e) {
       console.warn('Failed to load saved items from localStorage', e);
@@ -199,22 +203,21 @@ export default function App() {
     // Automatically navigate to Generated Content to watch live progress
     setActiveTab('generated');
 
-    for (let i = 0; i < targets.length; i++) {
-      const item = targets[i];
-      if (controller.signal.aborted) break;
-      try {
-        await processItemAsync(item, controller.signal);
-        // Small delay between batch items to respect free-tier rate limits
-        if (i < targets.length - 1 && !controller.signal.aborted) {
-          await new Promise((resolve) => setTimeout(resolve, 1000));
-        }
-      } catch (err: any) {
-        if (err.name === 'AbortError') {
-          console.log('Batch generation was halted by user.');
-          break;
+    let nextIndex = 0;
+    const worker = async () => {
+      while (!controller.signal.aborted) {
+        const currentIndex = nextIndex++;
+        if (currentIndex >= targets.length) return;
+        try {
+          await processItemAsync(targets[currentIndex], controller.signal);
+        } catch (err: any) {
+          if (err.name === 'AbortError') return;
         }
       }
-    }
+    };
+
+    // Two workers keep larger batches moving without creating a large Gemini rate spike.
+    await Promise.all(Array.from({ length: Math.min(2, targets.length) }, () => worker()));
 
     setIsGenerating(false);
     abortControllerRef.current = null;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { CopywritingRule, ProjectSettings } from '../types/attraction';
 import { BANNED_PHRASES } from '../constants/rules';
 import { 
@@ -28,12 +28,12 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
   settings,
   onUpdateSettings,
 }) => {
-  const [instructionDraft, setInstructionDraft] = useState(settings.additional_instructions);
+  const [instructionDraft, setInstructionDraft] = useState('');
+  const [isEditingInstructions, setIsEditingInstructions] = useState(!settings.additional_instructions.trim());
   const [instructionsSaved, setInstructionsSaved] = useState(false);
   const [editingRuleId, setEditingRuleId] = useState<string | null>(null);
+  const [viewingRule, setViewingRule] = useState<CopywritingRule | null>(null);
   const [ruleDraft, setRuleDraft] = useState({ title: '', description: '' });
-
-  useEffect(() => setInstructionDraft(settings.additional_instructions), [settings.additional_instructions]);
 
   const handleInstructionChange = (text: string) => {
     setInstructionDraft(text);
@@ -42,7 +42,22 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
 
   const applyInstructions = () => {
     onUpdateSettings({ ...settings, additional_instructions: instructionDraft.trim() });
+    setInstructionDraft('');
+    setIsEditingInstructions(false);
     setInstructionsSaved(true);
+  };
+
+  const editInstructions = () => {
+    setInstructionDraft(settings.additional_instructions);
+    setIsEditingInstructions(true);
+    setInstructionsSaved(false);
+  };
+
+  const clearInstructions = () => {
+    onUpdateSettings({ ...settings, additional_instructions: '' });
+    setInstructionDraft('');
+    setIsEditingInstructions(true);
+    setInstructionsSaved(false);
   };
 
   const saveRule = () => {
@@ -104,7 +119,7 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
           </div>
         </div>
 
-        <div className="space-y-2">
+        {isEditingInstructions ? <div className="space-y-2">
           <textarea
             id="settings-additional-instructions-textarea"
             rows={4}
@@ -137,7 +152,18 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
               <Save className="w-4 h-4" /> Save &amp; Apply Instructions
             </button>
           </div>
-        </div>
+        </div> : (
+          <div className="flex items-center justify-between gap-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3">
+            <div className="min-w-0">
+              <div className="flex items-center gap-2 text-sm font-semibold text-emerald-900"><CheckCircle2 className="h-4 w-4" /> Instructions saved and active</div>
+              <p className="mt-1 truncate text-xs text-emerald-800">{settings.additional_instructions}</p>
+            </div>
+            <div className="flex shrink-0 gap-2">
+              <button type="button" onClick={editInstructions} className="rounded-lg border border-emerald-300 bg-white px-3 py-1.5 text-xs font-semibold text-emerald-900">Edit</button>
+              <button type="button" onClick={clearInstructions} className="rounded-lg border border-rose-200 bg-white px-3 py-1.5 text-xs font-semibold text-rose-700">Clear</button>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Duplicate Content Protection */}
@@ -179,9 +205,9 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
+        <div className="grid grid-cols-1 items-start gap-4 text-xs md:grid-cols-2 lg:grid-cols-3">
           {settings.custom_rules.map((rule, index) => (
-            <div key={rule.id} className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2 group">
+            <div key={rule.id} className="flex h-40 flex-col rounded-xl border border-slate-200 bg-slate-50 p-4">
               <div className="flex items-start justify-between gap-2">
                 <div className="font-bold text-slate-900">{index + 1}. {rule.title}</div>
                 <div className="flex items-center gap-1">
@@ -191,7 +217,8 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
                   <button type="button" title="Remove rule" onClick={() => removeRule(rule.id)} className="p-1 rounded text-rose-700 hover:bg-rose-100"><Trash2 className="w-3.5 h-3.5" /></button>
                 </div>
               </div>
-              <p className="text-slate-600 whitespace-pre-wrap">{rule.description}</p>
+              <p className="mt-2 line-clamp-3 whitespace-pre-wrap text-slate-600">{rule.description}</p>
+              {rule.description.length > 150 && <button type="button" onClick={() => setViewingRule(rule)} className="mt-auto self-start text-xs font-semibold text-indigo-700 hover:text-indigo-900">See more</button>}
             </div>
           ))}
         </div>
@@ -230,6 +257,18 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
           </div>
         </div>
       </div>
+
+      {viewingRule && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4" onMouseDown={() => setViewingRule(null)}>
+          <div className="max-h-[80vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl" onMouseDown={(event) => event.stopPropagation()}>
+            <div className="flex items-start justify-between gap-4">
+              <h3 className="text-lg font-bold text-slate-900">{viewingRule.title}</h3>
+              <button type="button" onClick={() => setViewingRule(null)} className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm">Close</button>
+            </div>
+            <p className="mt-4 whitespace-pre-wrap text-sm leading-7 text-slate-700">{viewingRule.description}</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
