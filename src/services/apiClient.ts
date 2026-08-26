@@ -1,6 +1,6 @@
 import { AttractionItem, AttractionResearch, CopywritingRule, QualityCheckResult } from '../types/attraction';
 
-const PROXY_URL = 'https://gemini-proxy-2.vercel.app/api/attraction-writer';
+const PROXY_URL = 'https://gemini-proxy-2-pearl.vercel.app/api/attraction-writer';
 
 export interface ProcessAttractionParams {
   attraction_name: string;
