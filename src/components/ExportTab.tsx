@@ -157,8 +157,16 @@ export const ExportTab: React.FC<ExportTabProps> = ({ items }) => {
             <p className="text-stone-600 mt-1">Paragraphs without heading (preserves &lt;br&gt;&lt;br&gt;).</p>
           </div>
           <div className="bg-stone-50 p-3 rounded-xl border border-stone-200">
+            <code className="font-mono font-bold text-emerald-900">plan_your_visit</code>
+            <p className="text-stone-600 mt-1">Standalone evergreen visit-planning copy.</p>
+          </div>
+          <div className="bg-stone-50 p-3 rounded-xl border border-stone-200">
+            <code className="font-mono font-bold text-emerald-900">nearby_attractions</code>
+            <p className="text-stone-600 mt-1">Standalone nearby itinerary recommendations.</p>
+          </div>
+          <div className="bg-stone-50 p-3 rounded-xl border border-stone-200">
             <code className="font-mono font-bold text-emerald-900">full_content</code>
-            <p className="text-stone-600 mt-1">Heading and all paragraphs combined.</p>
+            <p className="text-stone-600 mt-1">Main description, Plan Your Visit and Nearby Attractions combined.</p>
           </div>
           <div className="bg-stone-50 p-3 rounded-xl border border-stone-200">
             <code className="font-mono font-bold text-emerald-900">source_urls</code>

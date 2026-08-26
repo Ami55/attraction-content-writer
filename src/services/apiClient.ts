@@ -27,6 +27,8 @@ export interface ProcessAttractionResponse {
   heading: string;
   content: string;
   full_content: string;
+  plan_your_visit?: string;
+  nearby_attractions?: string;
   word_count: number;
   research: AttractionResearch;
   quality_check: QualityCheckResult;

@@ -397,6 +397,19 @@ export const GeneratedContentTab: React.FC<GeneratedContentTabProps> = ({
                         }}
                       />
 
+                      {(item.plan_your_visit || item.nearby_attractions) && (
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 pt-4 border-t border-stone-200">
+                          <section className="rounded-xl border border-sky-200 bg-sky-50/50 p-4">
+                            <h5 className="text-sm font-semibold text-sky-950">Plan Your Visit</h5>
+                            <div className="mt-2 text-xs leading-relaxed text-stone-700" dangerouslySetInnerHTML={{ __html: item.plan_your_visit || 'Not generated.' }} />
+                          </section>
+                          <section className="rounded-xl border border-amber-200 bg-amber-50/50 p-4">
+                            <h5 className="text-sm font-semibold text-amber-950">Nearby Attractions</h5>
+                            <div className="mt-2 text-xs leading-relaxed text-stone-700" dangerouslySetInnerHTML={{ __html: item.nearby_attractions || 'Not generated.' }} />
+                          </section>
+                        </div>
+                      )}
+
                       {item.research?.information_guide && (
                         <div className="pt-4 border-t border-stone-200">
                           <button
@@ -424,6 +437,7 @@ export const GeneratedContentTab: React.FC<GeneratedContentTabProps> = ({
                                       ['People', item.research.core_entities.people?.join(', ')],
                                       ['Defining features', item.research.core_entities.defining_features?.join(', ')],
                                       ['Religious identity', item.research.core_entities.religious_identity],
+                                      ['Related civilizations, movements, events & landscape', item.research.core_entities.related_civilizations_movements_events_landscape?.join(', ')],
                                       ['Nearby landmarks', item.research.core_entities.nearby_landmarks?.join(', ')],
                                     ].filter(([, value]) => value).map(([label, value]) => (
                                       <div key={label} className="rounded-lg border border-stone-200 bg-white p-3">
@@ -444,6 +458,7 @@ export const GeneratedContentTab: React.FC<GeneratedContentTabProps> = ({
                                     ['Main features', item.research.information_guide.main_features],
                                     ['What to look for', item.research.information_guide.what_to_look_for],
                                     ['Stories & lesser-known details', item.research.information_guide.stories_and_lesser_known_details],
+                                    ['What the experience is like', item.research.information_guide.what_the_experience_is_like],
                                     ['Planning the visit', item.research.information_guide.planning_the_visit],
                                     ['Combining with nearby places', item.research.information_guide.combining_with_nearby_places],
                                     ['Value of a private guide', item.research.information_guide.value_of_a_private_guide],

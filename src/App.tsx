@@ -173,6 +173,8 @@ export default function App() {
         heading: response.heading,
         content: response.content,
         full_content: response.full_content,
+        plan_your_visit: response.plan_your_visit,
+        nearby_attractions: response.nearby_attractions,
         word_count: response.word_count,
         research: response.research,
         quality_status: response.quality_check?.passed ? 'passed' : 'warning',

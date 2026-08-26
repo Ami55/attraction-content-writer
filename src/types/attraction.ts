@@ -28,6 +28,7 @@ export interface AttractionResearch {
     people: string[];
     defining_features: string[];
     religious_identity: string;
+    related_civilizations_movements_events_landscape: string[];
     nearby_landmarks: string[];
   };
   information_guide?: {
@@ -36,6 +37,7 @@ export interface AttractionResearch {
     main_features: string;
     what_to_look_for: string;
     stories_and_lesser_known_details: string;
+    what_the_experience_is_like: string;
     planning_the_visit: string;
     combining_with_nearby_places: string;
     value_of_a_private_guide: string;
@@ -88,6 +90,8 @@ export interface AttractionItem {
   heading?: string;
   content?: string; // Paragraphs with <br><br>
   full_content?: string; // Heading + Paragraphs
+  plan_your_visit?: string;
+  nearby_attractions?: string;
   word_count?: number;
   
   // Research & Quality
