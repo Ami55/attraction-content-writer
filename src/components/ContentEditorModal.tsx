@@ -246,6 +246,7 @@ export const ContentEditorModal: React.FC<ContentEditorModalProps> = ({
           chat_history: historyPayload,
           research: item.research,
           additional_instructions: settings?.additional_instructions,
+          custom_rules: settings?.custom_rules,
         });
       } catch (apiErr: any) {
         console.warn('Backend refine endpoint returned error, applying instant safe rule engine:', apiErr);

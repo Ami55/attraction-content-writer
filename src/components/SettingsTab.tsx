@@ -1,5 +1,5 @@
-import React from 'react';
-import { ProjectSettings } from '../types/attraction';
+import React, { useEffect, useState } from 'react';
+import { CopywritingRule, ProjectSettings } from '../types/attraction';
 import { BANNED_PHRASES } from '../constants/rules';
 import { 
   Settings, 
@@ -10,7 +10,13 @@ import {
   AlertCircle,
   HelpCircle,
   FileCheck,
-  ShieldCheck
+  ShieldCheck,
+  Plus,
+  Pencil,
+  Trash2,
+  Save,
+  ArrowUp,
+  ArrowDown
 } from 'lucide-react';
 
 interface SettingsTabProps {
@@ -22,11 +28,54 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
   settings,
   onUpdateSettings,
 }) => {
+  const [instructionDraft, setInstructionDraft] = useState(settings.additional_instructions);
+  const [instructionsSaved, setInstructionsSaved] = useState(false);
+  const [editingRuleId, setEditingRuleId] = useState<string | null>(null);
+  const [ruleDraft, setRuleDraft] = useState({ title: '', description: '' });
+
+  useEffect(() => setInstructionDraft(settings.additional_instructions), [settings.additional_instructions]);
+
   const handleInstructionChange = (text: string) => {
-    onUpdateSettings({
-      ...settings,
-      additional_instructions: text,
-    });
+    setInstructionDraft(text);
+    setInstructionsSaved(false);
+  };
+
+  const applyInstructions = () => {
+    onUpdateSettings({ ...settings, additional_instructions: instructionDraft.trim() });
+    setInstructionsSaved(true);
+  };
+
+  const saveRule = () => {
+    const title = ruleDraft.title.trim();
+    const description = ruleDraft.description.trim();
+    if (!title || !description) return;
+    const rules = editingRuleId
+      ? settings.custom_rules.map((rule) => rule.id === editingRuleId ? { ...rule, title, description } : rule)
+      : [...settings.custom_rules, { id: crypto.randomUUID(), title, description }];
+    onUpdateSettings({ ...settings, custom_rules: rules });
+    setEditingRuleId(null);
+    setRuleDraft({ title: '', description: '' });
+  };
+
+  const editRule = (rule: CopywritingRule) => {
+    setEditingRuleId(rule.id);
+    setRuleDraft({ title: rule.title, description: rule.description });
+  };
+
+  const removeRule = (id: string) => {
+    onUpdateSettings({ ...settings, custom_rules: settings.custom_rules.filter((rule) => rule.id !== id) });
+    if (editingRuleId === id) {
+      setEditingRuleId(null);
+      setRuleDraft({ title: '', description: '' });
+    }
+  };
+
+  const moveRule = (index: number, direction: -1 | 1) => {
+    const nextIndex = index + direction;
+    if (nextIndex < 0 || nextIndex >= settings.custom_rules.length) return;
+    const rules = [...settings.custom_rules];
+    [rules[index], rules[nextIndex]] = [rules[nextIndex], rules[index]];
+    onUpdateSettings({ ...settings, custom_rules: rules });
   };
 
   const samplePresets = [
@@ -59,7 +108,7 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
           <textarea
             id="settings-additional-instructions-textarea"
             rows={4}
-            value={settings.additional_instructions}
+            value={instructionDraft}
             onChange={(e) => handleInstructionChange(e.target.value)}
             placeholder="e.g. Mention accessibility. Focus more on history. Avoid mentioning ticket prices. Use Canadian spelling."
             className="w-full text-sm rounded-xl border border-slate-300 p-4 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-500/20 outline-hidden bg-slate-50/50 resize-none font-sans"
@@ -72,7 +121,7 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
                 key={p.label}
                 type="button"
                 onClick={() => {
-                  const curr = settings.additional_instructions.trim();
+                  const curr = instructionDraft.trim();
                   if (!curr) handleInstructionChange(p.text);
                   else if (!curr.includes(p.text)) handleInstructionChange(`${curr}\n- ${p.text}`);
                 }}
@@ -81,6 +130,12 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
                 + {p.label}
               </button>
             ))}
+          </div>
+          <div className="flex items-center justify-end gap-3 pt-2">
+            {instructionsSaved && <span className="text-xs font-semibold text-emerald-700 flex items-center gap-1"><CheckCircle2 className="w-4 h-4" /> Saved and applied to every AI request</span>}
+            <button type="button" onClick={applyInstructions} className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700">
+              <Save className="w-4 h-4" /> Save &amp; Apply Instructions
+            </button>
           </div>
         </div>
       </div>
@@ -125,47 +180,33 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
-          <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5">
-            <div className="font-bold text-slate-900">1. Exact Subheading Format</div>
-            <p className="text-slate-600">
-              Must begin on line 1 with <code className="font-mono bg-white px-1.5 py-0.5 rounded border border-slate-200 text-indigo-900">See the best of [Attraction Name] with a private guide</code>. No &lt;br&gt; tags after heading.
-            </p>
-          </div>
+          {settings.custom_rules.map((rule, index) => (
+            <div key={rule.id} className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2 group">
+              <div className="flex items-start justify-between gap-2">
+                <div className="font-bold text-slate-900">{index + 1}. {rule.title}</div>
+                <div className="flex items-center gap-1">
+                  <button type="button" title="Move up" onClick={() => moveRule(index, -1)} disabled={index === 0} className="p-1 rounded hover:bg-white disabled:opacity-30"><ArrowUp className="w-3.5 h-3.5" /></button>
+                  <button type="button" title="Move down" onClick={() => moveRule(index, 1)} disabled={index === settings.custom_rules.length - 1} className="p-1 rounded hover:bg-white disabled:opacity-30"><ArrowDown className="w-3.5 h-3.5" /></button>
+                  <button type="button" title="Edit rule" onClick={() => editRule(rule)} className="p-1 rounded text-indigo-700 hover:bg-indigo-100"><Pencil className="w-3.5 h-3.5" /></button>
+                  <button type="button" title="Remove rule" onClick={() => removeRule(rule.id)} className="p-1 rounded text-rose-700 hover:bg-rose-100"><Trash2 className="w-3.5 h-3.5" /></button>
+                </div>
+              </div>
+              <p className="text-slate-600 whitespace-pre-wrap">{rule.description}</p>
+            </div>
+          ))}
+        </div>
 
-          <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5">
-            <div className="font-bold text-slate-900">2. Relevant Entities &amp; Real Details</div>
-            <p className="text-slate-600">
-              Naturally incorporate notable people (architects like Antoni Gaudí, artists, historical founders), architectural features, artworks, and 2–3 real places/moments per paragraph.
-            </p>
+        <div className="rounded-xl border border-dashed border-indigo-300 bg-indigo-50/40 p-4 space-y-3">
+          <div className="font-semibold text-sm text-slate-900">{editingRuleId ? 'Edit rule' : 'Add a new rule'}</div>
+          <div className="grid gap-3 md:grid-cols-[1fr_2fr_auto]">
+            <input value={ruleDraft.title} onChange={(e) => setRuleDraft({ ...ruleDraft, title: e.target.value })} placeholder="Rule title" className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm" />
+            <textarea value={ruleDraft.description} onChange={(e) => setRuleDraft({ ...ruleDraft, description: e.target.value })} placeholder="Instruction the AI must follow" rows={2} className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm resize-none" />
+            <div className="flex items-start gap-2">
+              <button type="button" onClick={saveRule} disabled={!ruleDraft.title.trim() || !ruleDraft.description.trim()} className="inline-flex items-center gap-1 rounded-lg bg-indigo-600 px-3 py-2 text-sm font-semibold text-white disabled:opacity-40"><Plus className="w-4 h-4" /> {editingRuleId ? 'Update' : 'Add'}</button>
+              {editingRuleId && <button type="button" onClick={() => { setEditingRuleId(null); setRuleDraft({ title: '', description: '' }); }} className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm">Cancel</button>}
+            </div>
           </div>
-
-          <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5">
-            <div className="font-bold text-slate-900">3. Paragraphs &amp; &lt;br&gt;&lt;br&gt;</div>
-            <p className="text-slate-600">
-              Plain descriptive paragraphs ending strictly with <code className="font-mono bg-white px-1.5 py-0.5 rounded border border-slate-200 text-indigo-900">&lt;br&gt;&lt;br&gt;</code>. Paragraph 1 introduces significance/setting; middle paragraphs weave 2-3 specific features; final paragraph explains guide value and tour customization.
-            </p>
-          </div>
-
-          <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5">
-            <div className="font-bold text-slate-900">4. Word Count Target</div>
-            <p className="text-slate-600">
-              Approximately 180–260 words (excluding heading). Sidebar-sized content block, not a long-form article.
-            </p>
-          </div>
-
-          <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5">
-            <div className="font-bold text-slate-900">5. Tone, Contractions &amp; Voice</div>
-            <p className="text-slate-600">
-              Gentle, curious, conversational &amp; observational (~8th grade reading level). Use contractions. No questions, no bullet points, no stylized sentence fragments, no "we/our/let's".
-            </p>
-          </div>
-
-          <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5">
-            <div className="font-bold text-slate-900">6. Private Guide Value</div>
-            <p className="text-slate-600">
-              Explain how a local guide adds value through storytelling, context, practical advice, and a personal experience. Emphasize flexibility and end by encouraging travellers to explore tours or customize their itinerary.
-            </p>
-          </div>
+          <p className="text-xs text-indigo-800">These saved rules are sent to Gemini for generation, regeneration, chat editing, and quality checks.</p>
         </div>
 
         {/* Prohibited Phrases Reference Table */}

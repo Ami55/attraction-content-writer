@@ -36,6 +36,15 @@ export const CONTENT_RULES = {
   DELIMITER: '<br><br>',
 };
 
+export const DEFAULT_COPYWRITING_RULES = [
+  { id: 'heading-format', title: 'Exact Subheading Format', description: 'Begin with: See the best of [Attraction Name] with a private guide. Do not add <br> tags after the heading.' },
+  { id: 'entities-details', title: 'Relevant Entities & Real Details', description: 'Naturally incorporate notable people, architectural features, artworks, and 2–3 real places or moments per paragraph.' },
+  { id: 'paragraph-format', title: 'Paragraphs & <br><br>', description: 'Use plain descriptive paragraphs ending with <br><br>. Introduce significance first, cover specific features in the middle, and close with guide value and customization.' },
+  { id: 'word-count', title: 'Word Count Target', description: 'Write approximately 180–260 words, excluding the heading. Keep it suitable for a compact content block.' },
+  { id: 'tone-voice', title: 'Tone, Contractions & Voice', description: 'Use a gentle, curious, conversational voice at about an 8th-grade reading level. Use contractions. Avoid questions, bullets, fragments, and we/our/let’s.' },
+  { id: 'guide-value', title: 'Private Guide Value', description: 'Explain guide value through storytelling, context, practical advice, flexibility, and a personal experience. End with an invitation to explore or customize.' },
+];
+
 export const ORIGINAL_PROMPT_TEMPLATE = `You're a SEO travel copywriter writing for Attraction Content Studio, a company offering customizable, private tours.
 
 Write content for a subheading section introducing [Attraction Name] and the reasons it's worth visiting with a private guide.

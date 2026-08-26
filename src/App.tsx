@@ -18,12 +18,14 @@ import { ViewSourcesModal } from './components/ViewSourcesModal';
 import { RegenerateModal } from './components/RegenerateModal';
 import { HowItWorksModal } from './components/HowItWorksModal';
 import { Footer } from './components/Footer';
+import { DEFAULT_COPYWRITING_RULES } from './constants/rules';
 
 const STORAGE_KEY_ITEMS = 'attraction_content_items_v2';
 const STORAGE_KEY_SETTINGS = 'attraction_content_settings_v2';
 
 const DEFAULT_SETTINGS: ProjectSettings = {
   additional_instructions: '',
+  custom_rules: DEFAULT_COPYWRITING_RULES,
   tone_preference: 'grounded',
   duplicate_protection: true,
   target_word_min: 180,
@@ -61,7 +63,8 @@ export default function App() {
     try {
       const saved = localStorage.getItem(STORAGE_KEY_SETTINGS);
       if (saved) {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        return { ...DEFAULT_SETTINGS, ...parsed, custom_rules: parsed.custom_rules?.length ? parsed.custom_rules : DEFAULT_COPYWRITING_RULES };
       }
     } catch (e) {
       console.warn('Failed to load saved settings from localStorage', e);
@@ -140,6 +143,7 @@ export default function App() {
           attraction_url: targetItem.attraction_url,
           notes: targetItem.notes,
           additional_instructions: settings.additional_instructions,
+          custom_rules: settings.custom_rules,
           existing_descriptions: existingDesc,
           regenerate_mode: regenerateOption,
           custom_instruction: customInstruction,

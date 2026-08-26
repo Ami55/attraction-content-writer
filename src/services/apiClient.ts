@@ -1,6 +1,6 @@
-import { AttractionItem, AttractionResearch, QualityCheckResult } from '../types/attraction';
+import { AttractionItem, AttractionResearch, CopywritingRule, QualityCheckResult } from '../types/attraction';
 
-const PROXY_URL = 'https://gemini-proxy-2-pearl.vercel.app/api/attraction-writer';
+const PROXY_URL = 'https://gemini-proxy-2.vercel.app/api/attraction-writer';
 
 export interface ProcessAttractionParams {
   attraction_name: string;
@@ -9,6 +9,7 @@ export interface ProcessAttractionParams {
   attraction_url?: string;
   notes?: string;
   additional_instructions?: string;
+  custom_rules?: CopywritingRule[];
   existing_descriptions?: Array<{
     attraction_name: string;
     opening_snippet?: string;
@@ -86,14 +87,16 @@ export async function auditContentApi(
   content: string,
   attraction_name: string,
   city?: string,
-  country?: string
+  country?: string,
+  additional_instructions?: string,
+  custom_rules?: CopywritingRule[]
 ): Promise<{ heading: string; content: string; full_content: string; word_count: number; quality_check: QualityCheckResult }> {
   return safeFetchJson<{ heading: string; content: string; full_content: string; word_count: number; quality_check: QualityCheckResult }>(
     PROXY_URL,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'quality-check', content, attraction_name, city, country }),
+      body: JSON.stringify({ action: 'quality-check', content, attraction_name, city, country, additional_instructions, custom_rules }),
     }
   );
 }
@@ -108,6 +111,7 @@ export interface RefineWithChatParams {
   chat_history?: Array<{ role: 'user' | 'assistant'; content: string }>;
   research?: AttractionResearch;
   additional_instructions?: string;
+  custom_rules?: CopywritingRule[];
 }
 
 export interface RefineWithChatResponse {

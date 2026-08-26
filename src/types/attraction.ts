@@ -87,11 +87,18 @@ export interface AttractionItem {
 
 export interface ProjectSettings {
   additional_instructions: string;
+  custom_rules: CopywritingRule[];
   tone_preference: string;
   duplicate_protection: boolean;
   target_word_min: number;
   target_word_max: number;
   theme_id?: ThemeId;
+}
+
+export interface CopywritingRule {
+  id: string;
+  title: string;
+  description: string;
 }
 
 export type RegenerateOption =
