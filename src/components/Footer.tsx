@@ -38,7 +38,7 @@ export const Footer: React.FC = () => {
           {/* Copyright & Creator Attribution */}
           <div className="text-center md:text-right text-xs text-slate-500 space-y-0.5">
             <p className="font-medium text-slate-700">
-              &copy; 2026 Attraction Content Studio. Developed by <span className="font-semibold text-indigo-900">Ami - SEO Girl</span>. All rights reserved.
+              &copy; 2026 Attraction Content Studio. Developed by <span className="font-semibold text-indigo-900"><strong>SEO Girl - Ami</strong></span>. All rights reserved.
             </p>
             <p className="text-[11px] text-slate-400">
               Crafted for private tour attraction marketing &amp; verified SEO storytelling.
